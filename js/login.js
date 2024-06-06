@@ -17,6 +17,14 @@ document.querySelector('#btn-login').addEventListener('click', async e => {
   try {
     const res = await axios.post('/login', data)
     showToast(res.data.message)
+    // console.log(res);
+    const obj = {
+      username: res.data.data.username,
+      token: res.data.data.token
+    }
+    // 登录成功 将用户信息存到本地
+    localStorage.setItem('userMsg', JSON.stringify(obj))
+
     setTimeout(() => {
       location.href = './index.html'
     }, 1500)
