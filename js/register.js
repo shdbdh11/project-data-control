@@ -14,10 +14,16 @@ document.querySelector('#btn-register').addEventListener('click', async e => {
     return showToast('密码格式不符合')
   }
   // 发送请求
-  const res = await axios.post('/register', data)
-  showToast(res.data.message)
+  try {
+    const res = await axios.post('/register', data)
+    showToast(res.data.message)
 
-  setTimeout(() => {
-    location.href = './login.html'
-  }, 1500);
+    setTimeout(() => {
+      location.href = './login.html'
+    }, 1500);
+  }
+  catch (error) {
+    showToast(error.response.data.message)
+  }
+
 })
