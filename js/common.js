@@ -8,4 +8,3 @@ const showToast = (msg) => {
   toast.show()
   document.querySelector('.toast-body').innerHTML = msg
 }
-showToast('登录成功')
