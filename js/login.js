@@ -24,7 +24,6 @@ document.querySelector('#btn-login').addEventListener('click', async e => {
     }
     // 登录成功 将用户信息存到本地
     localStorage.setItem('userMsg', JSON.stringify(obj))
-
     setTimeout(() => {
       location.href = './index.html'
     }, 1500)
@@ -34,3 +33,4 @@ document.querySelector('#btn-login').addEventListener('click', async e => {
   }
 }
 )
+
