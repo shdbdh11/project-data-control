@@ -29,17 +29,17 @@ const getData = async () => {
     // console.log(res);
     // 渲染数据
     // 渲染overview
-    renderOverview(res.data.data.overview)
+    renderOverview(res.data.overview)
   } catch (err) {
     console.dir(err);
     // 判断token是否过期，过期就提示用户并退出登录
-    if (err.response.status === 401) {
-      showToast('您的登录信息已过期，请重新登录')
-      localStorage.removeItem('userMsg')
-      setTimeout(() => {
-        location.href = './login.html'
-      }, 1500);
-    }
+    // if (err.response.status === 401) {
+    //   showToast('您的登录信息已过期，请重新登录')
+    //   localStorage.removeItem('userMsg')
+    //   setTimeout(() => {
+    //     location.href = './login.html'
+    //   }, 1500);
+    // }
   }
 }
 getData()

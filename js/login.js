@@ -16,11 +16,11 @@ document.querySelector('#btn-login').addEventListener('click', async e => {
   // 发送请求
   try {
     const res = await axios.post('/login', data)
-    showToast(res.data.message)
+    showToast(res.message)
     // console.log(res);
     const obj = {
-      username: res.data.data.username,
-      token: res.data.data.token
+      username: res.data.username,
+      token: res.data.token
     }
     // 登录成功 将用户信息存到本地
     localStorage.setItem('userMsg', JSON.stringify(obj))

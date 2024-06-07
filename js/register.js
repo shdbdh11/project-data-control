@@ -16,14 +16,14 @@ document.querySelector('#btn-register').addEventListener('click', async e => {
   // 发送请求
   try {
     const res = await axios.post('/register', data)
-    showToast(res.data.message)
+    showToast(res.message)
 
     setTimeout(() => {
       location.href = './login.html'
     }, 1500);
   }
   catch (error) {
-    showToast(error.response.data.message)
+    showToast(error.response.message)
   }
 
 })
