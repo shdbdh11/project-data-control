@@ -19,7 +19,7 @@ logout()
 const getData = async () => {
   const res = await axios.get('/dashboard')
   console.log(res);
-  const { overview, year, salaryData, groupData } = res.data
+  const { overview, year, salaryData, groupData, provinceData } = res.data
   // 渲染数据
   // 渲染overview
   renderOverview(overview)
@@ -31,6 +31,8 @@ const getData = async () => {
   renderGroupData(groupData)
   // 渲染 男女薪资分布
   renderFnbu(salaryData)
+  // 渲染 省份分布  地图
+  renderProvince(provinceData)
 }
 getData()
 
@@ -331,3 +333,127 @@ function renderFnbu(fnbu) {
   };
   myChart.setOption(option)
 }
+
+//  渲染地图
+function renderProvince(provinceData) {
+  const dom = document.querySelector('#map')
+  const myEchart = echarts.init(dom)
+  const dataList = [
+    { name: '南海诸岛', value: 0 },
+    { name: '北京', value: 0 },
+    { name: '天津', value: 0 },
+    { name: '上海', value: 0 },
+    { name: '重庆', value: 0 },
+    { name: '河北', value: 0 },
+    { name: '河南', value: 0 },
+    { name: '云南', value: 0 },
+    { name: '辽宁', value: 0 },
+    { name: '黑龙江', value: 0 },
+    { name: '湖南', value: 0 },
+    { name: '安徽', value: 0 },
+    { name: '山东', value: 0 },
+    { name: '新疆', value: 0 },
+    { name: '江苏', value: 0 },
+    { name: '浙江', value: 0 },
+    { name: '江西', value: 0 },
+    { name: '湖北', value: 0 },
+    { name: '广西', value: 0 },
+    { name: '甘肃', value: 0 },
+    { name: '山西', value: 0 },
+    { name: '内蒙古', value: 0 },
+    { name: '陕西', value: 0 },
+    { name: '吉林', value: 0 },
+    { name: '福建', value: 0 },
+    { name: '贵州', value: 0 },
+    { name: '广东', value: 0 },
+    { name: '青海', value: 0 },
+    { name: '西藏', value: 0 },
+    { name: '四川', value: 0 },
+    { name: '宁夏', value: 0 },
+    { name: '海南', value: 0 },
+    { name: '台湾', value: 0 },
+    { name: '香港', value: 0 },
+    { name: '澳门', value: 0 },
+  ]
+  let maxNum = 0
+  dataList.forEach(item => {
+    // 拿dataList每一项的name 和 provinceData的name做对比
+    const res = provinceData.find(ele => {
+      // 返回 服务器provinceData的name 包含 本地的dataList的name
+      maxNum = ele.value > maxNum ? ele.value : maxNum
+      return ele.name.includes(item.name)
+    })
+    // console.log(res);
+    // 如果有数据，就让dataList的value 和 provinceData的value一致
+    if (res !== undefined) {
+      item.value = res.value
+    }
+  })
+  const option = {
+    title: {
+      text: '籍贯分布',
+      top: 10,
+      left: 10,
+      textStyle: {
+        fontSize: 16,
+      },
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{b}: {c} 位学员',
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      textStyle: {
+        color: '#fff',
+      },
+    },
+    visualMap: {
+      min: 0,
+      max: maxNum,
+      left: 'left',
+      bottom: '20',
+      text: [maxNum, '0'],
+      inRange: {
+        color: ['#ffffff', '#0075F0'],
+      },
+      show: true,
+      left: 40,
+    },
+    geo: {
+      map: 'china',
+      roam: false,
+      zoom: 1.0,
+      label: {
+        normal: {
+          show: true,
+          fontSize: '10',
+          color: 'rgba(0,0,0,0.7)',
+        },
+      },
+      itemStyle: {
+        normal: {
+          borderColor: 'rgba(0, 0, 0, 0.2)',
+          color: '#e0ffff',
+        },
+        emphasis: {
+          areaColor: '#34D39A',
+          shadowOffsetX: 0,
+          shadowOffsetY: 0,
+          shadowBlur: 20,
+          borderWidth: 0,
+          shadowColor: 'rgba(0, 0, 0, 0.5)',
+        },
+      },
+    },
+    series: [
+      {
+        name: '籍贯分布',
+        type: 'map',
+        geoIndex: 0,
+        data: dataList,
+      },
+    ],
+  }
+  myEchart.setOption(option)
+}
+
