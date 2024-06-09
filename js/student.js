@@ -76,3 +76,39 @@ const selectInit = async () => {
   })
 }
 selectInit()
+
+// 点击模态框 确定按钮新增
+const formDom = document.querySelector('#form')
+document.querySelector('#submit').addEventListener('click', e => {
+  addStudents()
+})
+
+// 添加学生信息函数
+const addStudents = async () => {
+  // 获取表单数据
+  const data = serialize(formDom, { hash: true, empty: true })
+  // console.log(data);
+  data.age = +data.age
+  data.gender = +data.gender
+  data.group = +data.group
+  data.hope_salary = +data.hope_salary
+  data.salary = +data.salary
+  try {
+    const res = await axios.post('/students', data)
+    // console.log(res);
+    // 添加成功，关闭模态框
+    addModal.hide()
+    // 提示成功
+    showToast(res.message)
+    // 清空表单
+    formDom.reset()
+    // 渲染数据
+    renderStudentData()
+  }
+  catch (err) {
+    // 添加失败，关闭模态框
+    addModal.hide()
+    // 提示失败
+    showToast('输入数据错误')
+  }
+}
